@@ -88,7 +88,7 @@ class Message(models.Model):
     
     def __str__(self):
         return f"{self.message}"
-def __repr__(self):
+    def __repr__(self):
         return f"Message: (ID: {self.id}) -> {self.user} {self.message}"
 
 class Comment(models.Model):

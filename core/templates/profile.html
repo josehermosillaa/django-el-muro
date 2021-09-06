@@ -3,14 +3,14 @@
 {% block titulo %}INDEX USUARIO{% endblock %}
 
 {% block contenido %}
-<h1>Bienvenid@: {{request.session.user.first_name}} {{request.session.user.last_name}}</h1>
+<h1>{{user.first_name}} {{user.last_name}}'s Profile</h1>
     <a href="/wall">Escribir un Post</a>
     <h2>Post Realizados</h2>
-    {% for post in messages_index %}
-    <p>{{post.message}} {{post.created}}</p>
+    {% for post in messages_user %}
+    <p>{{post.message}} {{post.created}} </p>
     {% endfor %}
     <h2>Comentarios Realizados</h2>
-    {% for post in comments_index %}
+    {% for post in comments_user %}
     <p>{{post.comment}}  {{post.created}} to {{post.message.user}}</p>
     {% endfor %}
 
