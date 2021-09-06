@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block titulo %}INDEX USUARIO{% endblock %}
+
+{% block contenido %}
+<h1>Bienvenid@: {{request.session.user.first_name}} {{request.session.user.last_name}}</h1>
+    <a href="/wall">Escribir un Post</a>
+    <h2>Post Realizados</h2>
+    {% for post in user.user_messages.all %}
+    <p>{{post.message}}</p>
+    {% endfor %}
+    <h2>Comentarios Realizados</h2>
+    {% for post in user.user_comments.all %}
+    <p>{{post.comment}}</p>
+    {% endfor %}
+
+<a href="/logout">SALIR DEL SISTEMA</a>
+
+{% endblock %}
+
+{% block libreria %}
+{% endblock %}

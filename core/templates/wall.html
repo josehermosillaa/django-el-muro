@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block titulo %}INDEX USUARIO{% endblock %}
+
+{% block contenido %}
+<div id='top'>
+    <h1>CodingDojo Wall</h1>
+    <h2 id='wc'>Welcome {{request.session.user.first_name}} {{request.session.user.last_name}}</h2>
+    <a id='logoff' href='/logout'>Log off</a>
+</div>
+<hr>
+<form action='/post_message' method='POST'>
+{% csrf_token %}
+    <h2 id='m1'>Post a message</h2>
+    <textarea id="message" name="message" rows="8" cols="100" placeholder='Enter message here..'></textarea>
+    <input id='sub_message' type='submit' value='Post a message'>
+</form>
+{% for post in messages_lista %}
+<div id='post' >
+    <h3><a href='/user_profile/{{post.user.id}}'>{{post.user.first_name}} {{post.user.last_name}}</a> - {{post.created}}</h3>
+    <p>{{post.message}}</p>
+    {% for comment in post.comments.all %} <!-- comments, los comentarios del mensaje-->
+    <div id='inner_post'>
+        <h4><a href='/user_profile/{{post.user.id}}'>{{comment.user.first_name}} {{comment.user.last_name}}</a> {{comment.user.created_at}}</h4>
+        <p>{{comment.comment}}</p>
+        <p id='del_comment'><a href='/delete/{{comment.id}}'>Delete</a></p>
+        {% endfor %}
+        <form action ='/add_comment/{{post.id}}' method='POST'>
+        {% csrf_token %}
+            <h4 id='c1'>Post a comment</h4>
+            <textarea id='comment' name='comment' rows="4" cols="50" placeholder='Enter comment here..'></textarea>
+            <input id='sub_comment' type='submit' value='Post a comment'>
+        </form>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}
+
+{% block libreria %}
+{% endblock %}
