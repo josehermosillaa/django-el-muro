@@ -3,18 +3,50 @@
 {% block titulo %}INDEX USUARIO{% endblock %}
 
 {% block contenido %}
-<h1>{{user.first_name}} {{user.last_name}}'s Profile</h1>
-    <a href="/wall">Escribir un Post</a>
-    <h2>Post Realizados</h2>
-    {% for post in messages_user %}
-    <p>{{post.message}} {{post.created}} </p>
-    {% endfor %}
-    <h2>Comentarios Realizados</h2>
-    {% for post in comments_user %}
-    <p>{{post.comment}}  {{post.created}} to {{post.message.user}}</p>
-    {% endfor %}
+<div class="container m-2">
+    <div class="row m-2">    
+        <h1>{{user.first_name}} {{user.last_name}}'s Profile</h1>
+        <div class="col ">
+            <a class="btn btn-primary   " href="/wall">Escribir un Post</a>
+        </div>
+    </div>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>           
+                <th scope="col"><h4>Posts</h4></th>
+                <th scope="col"><h4>created at</h4></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in messages_user %}
+            <tr>
+                <td>{{post.message}}</td>
+                <td>{{post.created}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>           
+                <th scope="col"><h4>My Comments</h4></th>
+                <th scope="col"><h4>created at</h4></th>
+                <th scope="col"><h4> to user</h4></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in comments_user %}
+            <tr>
+                <td>{{post.comment}}</td>
+                <td>{{post.created}}</td>
+                <td>{{post.message.user}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-<a href="/logout">SALIR DEL SISTEMA</a>
+
 
 {% endblock %}
 

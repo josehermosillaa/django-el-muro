@@ -4,6 +4,8 @@ import bcrypt
 from .decorators import login_required
 from .models import*
 from .auth import *
+from datetime import datetime, time, timedelta
+from django.utils import timezone
 
 @login_required
 def index(request):
@@ -52,13 +54,24 @@ def post_comment(request, id):
     return redirect('/wall')
 
 #el wraper no me captura el id
+def minutos(fecha):
+    today = timezone.now()
+    resultado=(today.year-fecha.year)*365*24*60+(today.month-fecha.month)*30*24*60+(today.hour-fecha.hour)*60+(today.minute-fecha.minute)
+    return resultado
 @login_required
 def delete_comment(request,id):
     poster = Comment.objects.get(id=id)
+    tiempo = minutos(poster.created)
+    
+
     if request.session['user']['id'] == poster.user.id:
-        poster.delete()
-        messages.success(request, f"se he eliminado el comentario de {request.session['user']['first_name']}")
-        return redirect('/wall')
+        if tiempo >30:
+            messages.warning(request, "han pasado mas de 30 minutos, no puedes borrar el comentario")
+            return redirect('/wall')
+        else:    
+            poster.delete()
+            messages.success(request, f"se he eliminado el comentario de {request.session['user']['first_name']}")
+            return redirect('/wall')
     else:
         messages.warning(request, "no puede eliminar comentarios de otros usuarios")
         return redirect('/wall')
@@ -74,5 +87,9 @@ def profile(request,id):
         }
 
     return render(request, 'profile.html',context)
+
+
+
+
 
 

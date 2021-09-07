@@ -4,42 +4,43 @@
 
 {% block contenido %}
 <div class="container m-2">
-<div class="row">
-    <h1>CodingDojo Wall</h1>
-    <h2 id='wc'>Welcome {{request.session.user.first_name}} {{request.session.user.last_name}}</h2>
-    
-</div>
-<hr>
-<div class="row m-2">
-<form action='/post_message' method='POST'>
-{% csrf_token %}
-    <div class="form-group ">
-        <label for="">Post a message</label>   
-        <textarea class="form-control" id="message" name="message" rows="8"  placeholder='Enter message here..'></textarea>
-        <button type="submit" class="btn btn-primary mt-3 ">Post a message</button>
+    <div class="row">
+        <h1>CodingDojo Wall</h1>
+        <h2 id='wc'>Welcome {{request.session.user.first_name}} {{request.session.user.last_name}}</h2>
+        <h3>Count of Posts: {{ messages_lista|length }}</h3>
+        <h3>Count of Comments: {{ comments_lista|length }}</h3>
     </div>
-</form>
-</div>
-{% for post in messages_lista %}
-<div class="form-group col-8 m-2 ">
-    <h4><a href='/user_profile/{{post.user.id}}'>{{post.user.first_name}} {{post.user.last_name}}</a> Said {{post.created}}</h4>
-    <p>{{post.message}}</p>
-    {% for comment in post.comments.all %} <!-- comments, los comentarios del mensaje-->
-    <div class="form-group" id='inner_post'>
-        <h6><a href='/user_profile/{{post.user.id}}'>{{comment.user.first_name}} {{comment.user.last_name}}</a> Comment {{comment.created}}</h6>
-        <p>{{comment.comment}}</p>
-        <p id='del_comment'><a href='/delete/{{comment.id}}'>Delete  <i class="fas fa-trash-alt"></i></a></p>
-        {% endfor %}
-        <form action ='/add_comment/{{post.id}}' method='POST'>
+    <hr>
+    <div class="row m-2">
+        <form action='/post_message' method='POST'>
         {% csrf_token %}
-            <h4>Post a comment</h4>
-            <textarea class="form-control" name='comment' rows="4"  placeholder='Enter comment here..'></textarea>
-            <button type="submit" class="btn btn-primary mt-3 ">Post a comment</button>
+            <div class="form-group ">
+                <label for="">Post a message</label>   
+                <textarea class="form-control" id="message" name="message" rows="8"  placeholder='Enter message here..'></textarea>
+                <button type="submit" class="btn btn-primary mt-3 ">Post a message</button>
+            </div>
         </form>
     </div>
-</div>
-{% endfor %}
-</div>
+    {% for post in messages_lista %}
+    <div class="form-group col-8 m-2 ">
+        <h4><a href='/user_profile/{{post.user.id}}'>{{post.user.first_name}} {{post.user.last_name}}</a> Said {{post.created}}</h4>
+        <p>{{post.message}}</p>
+        {% for comment in post.comments.all %} <!-- comments, los comentarios del mensaje-->
+        <div class="form-group" id='inner_post'>
+            <h6><a href='/user_profile/{{post.user.id}}'>{{comment.user.first_name}} {{comment.user.last_name}}</a> Comment {{comment.created}}</h6>
+            <p>{{comment.comment}}</p>
+            <p id='del_comment'><a href='/delete/{{comment.id}}'>Delete  <i class="fas fa-trash-alt"></i></a></p>
+            {% endfor %}
+            <form action ='/add_comment/{{post.id}}' method='POST'>
+            {% csrf_token %}
+                <h4>Post a comment</h4>
+                <textarea class="form-control" name='comment' rows="4"  placeholder='Enter comment here..'></textarea>
+                <button type="submit" class="btn btn-primary mt-3 ">Post a comment</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
 </div>
 
 {% endblock %}
